@@ -21,10 +21,15 @@ Il y a 7 PIN
 -RST
  
 5v du module vers 5v de l'arduino
+
 GND du module vers GND de l'arduino
+
 VDD du module vers 5v de l'Alim externe via 1N4007
+
 SIM_TXD du module vers D8 de l'arduino
+
 SIM_RXD du module vers D7 de l'arduino
+
 GND du module vers GND de l'Alim externe
 
 Le module clignote mais ne renvoi rien...
