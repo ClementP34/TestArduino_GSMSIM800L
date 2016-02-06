@@ -22,9 +22,19 @@ void setup() {
   serialSIM800.begin(9600);
   delay(1000);
 
+  Serial.println("----- Code PIN -----");
   serialSIM800.print("AT+CPIN=");
   serialSIM800.println(SIM_PIN_CODE);
-   
+  delay(5000);
+  Serial.println("----- Statut -----");
+  serialSIM800.println("ATI"); 
+  delay(5000);
+  Serial.println("----- Etat du Reseau -----");
+  serialSIM800.println("AT+CSQ"); 
+  delay(5000);
+  Serial.println("----- Operateur -----");
+  serialSIM800.println("AT+COPS ?"); 
+  delay(5000);   
   Serial.println("Setup Complete!");
 }
  
