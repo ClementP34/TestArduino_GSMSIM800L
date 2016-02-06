@@ -19,7 +19,7 @@ Il y a 7 PIN
 -SIM_RXD
 -GND
 -RST
-
+ 
 5v du module vers 5v de l'arduino
 GND du module vers GND de l'arduino
 VDD du module vers 5v de l'Alim externe via 1N4007
