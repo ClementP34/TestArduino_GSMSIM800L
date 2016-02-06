@@ -12,6 +12,8 @@ SoftwareSerial serialSIM800(SIM800_TX_PIN,SIM800_RX_PIN);
 
 //Code PIN
 String SIM_PIN_CODE = String("xxxx");
+//1 seul sms
+boolean sms;
  
 void setup() {
   //Begin serial comunication with Arduino and Arduino IDE (Serial Monitor)
@@ -21,7 +23,7 @@ void setup() {
   //Being serial communication witj Arduino and SIM800
   serialSIM800.begin(9600);
   delay(1000);
-
+  Serial.println("---## Initialisation ##---");
   Serial.println("----- Code PIN -----");
   serialSIM800.print("AT+CPIN=");
   serialSIM800.println(SIM_PIN_CODE);
@@ -35,7 +37,9 @@ void setup() {
   Serial.println("----- Operateur -----");
   serialSIM800.println("AT+COPS ?"); 
   delay(5000);   
-  Serial.println("Setup Complete!");
+  Serial.println("---## Setup Complete ##---");
+  Serial.println("---## SendSMS ##---");
+  sms = true;
 }
  
 void loop() {
@@ -47,4 +51,25 @@ void loop() {
   if(Serial.available()){    
     serialSIM800.write(Serial.read());
   }
+//un seul sms
+  if(sms==true){
+    sendsms();        
+    sms = false;
+  }
 }
+
+  void sendsms(){
+    Serial.println("Sending text message...");
+    serialSIM800.print("AT+CMGF=1\r");  // Lance le mode SMS
+    delay(1000);
+    // Entrez votre numéro de téléphone    
+    serialSIM800.print("AT+CMGS=\"+33600000000\"\r");  
+    delay(1000);
+    // Entrez votre message ici    
+    serialSIM800.print("Message ici \r");  
+    // CTR+Z en langage ASCII, indique la fin du message
+    serialSIM800.print(char(26));        
+    delay(1000);
+    serialSIM800.println();
+    Serial.println("Text send");  // Le message est envoyé.
+    }
