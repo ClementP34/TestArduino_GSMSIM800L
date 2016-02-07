@@ -11,8 +11,8 @@
 SoftwareSerial serialSIM800(SIM800_TX_PIN,SIM800_RX_PIN);
 
 //Code PIN
-String SIM_PIN_CODE = String("xxxx");
-//1 seul sms
+String SIM_PIN_CODE = String("xxx");
+//conditionnel d'envoi de sms
 boolean sms;
  
 void setup() {
@@ -22,7 +22,9 @@ void setup() {
    
   //Being serial communication witj Arduino and SIM800
   serialSIM800.begin(9600);
+  
   delay(1000);
+  //Initialisation
   Serial.println("---## Initialisation ##---");
   Serial.println("----- Code PIN -----");
   serialSIM800.print("AT+CPIN=");
@@ -51,25 +53,29 @@ void loop() {
   if(Serial.available()){    
     serialSIM800.write(Serial.read());
   }
-//un seul sms
+
   if(sms==true){
-    sendsms();        
+    sendsms("Message ici \r","33600000000");        
     sms = false;
   }
 }
 
-  void sendsms(){
-    Serial.println("Sending text message...");
+  void sendsms(String messageEnvoi, String numeroTel) {
+    Serial.println("Début d'envoi de message");
     serialSIM800.print("AT+CMGF=1\r");  // Lance le mode SMS
     delay(1000);
     // Entrez votre numéro de téléphone    
-    serialSIM800.print("AT+CMGS=\"+33600000000\"\r");  
+    serialSIM800.print("AT+CMGS=\"+");
+    serialSIM800.print(numeroTel);
+    serialSIM800.print("\"\r");  
     delay(1000);
     // Entrez votre message ici    
-    serialSIM800.print("Message ici \r");  
+    serialSIM800.print(messageEnvoi);  
     // CTR+Z en langage ASCII, indique la fin du message
     serialSIM800.print(char(26));        
     delay(1000);
     serialSIM800.println();
-    Serial.println("Text send");  // Le message est envoyé.
+    Serial.print("SMS pour ");
+    Serial.print(numeroTel);
+    Serial.print(" Envoyé");
     }
