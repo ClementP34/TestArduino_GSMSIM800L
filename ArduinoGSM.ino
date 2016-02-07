@@ -11,7 +11,7 @@
 SoftwareSerial serialSIM800(SIM800_TX_PIN,SIM800_RX_PIN);
 
 //Code PIN
-String SIM_PIN_CODE = String("xxx");
+String SIM_PIN_CODE = String("xxxx");
 //conditionnel d'envoi de sms
 boolean sms;
  
@@ -41,7 +41,9 @@ void setup() {
   delay(5000);   
   Serial.println("---## Setup Complete ##---");
   Serial.println("---## SendSMS ##---");
-  sms = true;
+  
+  //envoi de sms de test
+  sms = false;
 }
  
 void loop() {
@@ -55,7 +57,7 @@ void loop() {
   }
 
   if(sms==true){
-    sendsms("Message ici \r","33600000000");        
+    sendsms("Message ici","33600000000");        
     sms = false;
   }
 }
@@ -70,12 +72,13 @@ void loop() {
     serialSIM800.print("\"\r");  
     delay(1000);
     // Entrez votre message ici    
-    serialSIM800.print(messageEnvoi);  
+    serialSIM800.print(messageEnvoi);
+    serialSIM800.print(" \r");  
     // CTR+Z en langage ASCII, indique la fin du message
     serialSIM800.print(char(26));        
     delay(1000);
     serialSIM800.println();
     Serial.print("SMS pour ");
     Serial.print(numeroTel);
-    Serial.print(" Envoyé");
+    Serial.println(" Envoyé");
     }
