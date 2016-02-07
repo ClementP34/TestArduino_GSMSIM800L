@@ -5,7 +5,7 @@
 Programme simple pour envoyer des commandes AT au module par la console Serie.
 C'est de la repompe de tuto, je suis un débutant et j'arrive pas à bien le brancher...
 
-J'ai branché comme ça, il doit y avoir une erreur
+Le sms est bien envoyé, mais j'ai pas de retour des commande AT dans la console... Au moins ça avance !
 
 ###Materiel
 
@@ -30,9 +30,10 @@ Il y a 7 PIN :
 * 5v du module vers 5v de l'Alim externe
 * GND du module vers GND de l'Alim externe
 * VDD du module vers 5v de l'Alim externe via 1N4007
-* SIM_TXD du module vers D8 de l'arduino
-* SIM_RXD du module vers D7 de l'arduino
+* SIM_TXD du module vers D8 de l'Arduino
+* SIM_RXD du module vers D7 de l'Arduino
 * GND du module vers GND de l'Alim externe
+* RST du module vers RST de l'Arduino
 
 ##Resultat
-La diode "d2 ring" module s'allume, la led "d6 net" clignote mais le module ne comunique pas avec l'Arduino...
+Le SMS est envoyé, mais je n'ai pas les retours des commandes AT dans la console...
