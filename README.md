@@ -7,9 +7,13 @@ C'est de la repompe de tuto, je suis un débutant et j'arrive pas à bien le bra
 
 J'ai branché comme ça, il doit y avoir une erreur
 
+###Materiel
+
 1 x Alim externe(sur 5v / 2A)
 1 x Arduino Nano
 1 x SIM800L EVB de RoHS
+
+###PIN
 
 Il y a 7 PIN :
 * 5v
@@ -20,6 +24,8 @@ Il y a 7 PIN :
 * GND
 * RST
  
+###Branchement...
+
 * 5v du module vers 5v de l'arduino
 * GND du module vers GND de l'arduino
 * VDD du module vers 5v de l'Alim externe via 1N4007
@@ -27,4 +33,5 @@ Il y a 7 PIN :
 * SIM_RXD du module vers D7 de l'arduino
 * GND du module vers GND de l'Alim externe
 
+##Resultat
 La diode "d2 ring" module s'allume, la led "d6 net" clignote mais le module ne comunique pas avec l'Arduino...
