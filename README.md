@@ -9,9 +9,9 @@ J'ai branché comme ça, il doit y avoir une erreur
 
 ###Materiel
 
-1 x Alim externe(calibré sur 5v / 2A)
-1 x Arduino Nano
-1 x SIM800L EVB de RoHS
+1. 1 x Alim externe(calibré sur 5v / 2A)
+2. 1 x Arduino Nano
+3. 1 x SIM800L EVB de RoHS
 
 ###PIN
 
