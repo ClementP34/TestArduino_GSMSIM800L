@@ -12,13 +12,13 @@ J'ai branché comme ça, il doit y avoir une erreur
 1 x SIM800L EVB de RoHS
 
 Il y a 7 PIN
--5v
--GND
--VDD
--SIM_TXD
--SIM_RXD
--GND
--RST
+* 5v
+* GND
+* VDD
+* SIM_TXD
+* SIM_RXD
+* GND
+* RST
  
 5v du module vers 5v de l'arduino
 
