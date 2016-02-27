@@ -2,77 +2,86 @@
 
 //Connexion des broches  
 //SIM800 TX is connected to Arduino D8
-#define SIM800_TX_PIN 8
+#define SIM800L_TX_PIN 8
  
 //SIM800 RX is connected to Arduino D7
-#define SIM800_RX_PIN 7
+#define SIM800L_RX_PIN 7
  
 //Create software serial object to communicate with SIM800
-SoftwareSerial serialSIM800(SIM800_TX_PIN,SIM800_RX_PIN);
+SoftwareSerial serialSIM800L(SIM800L_TX_PIN,SIM800L_RX_PIN);
 
 //conditionnel d'envoi de sms
-boolean sms;
+boolean smsTest;
+boolean smsReception;
 //--------------------------------------------------------------------------------
  void setup() {
-  //Begin serial comunication with Arduino and Arduino IDE (Serial Monitor)
+  //Initialisation de la connexion Serie avec l'Arduino et du Moniteur Serie
   Serial.begin(9600);
-  //while(!Serial);
-   
-  //Being serial communication witj Arduino and SIM800
-  serialSIM800.begin(19200);
+     
+  //Initialisation de la connexion Serie avec l'Arduino et le module SIM800L
+  serialSIM800L.begin(19200);
   
   delay(1000);
-  InitialisationGSM(serialSIM800,"0000");
-  Serial.println("---## Send TEST SMS ##---");
+  Serial.println("---## Initialisation ##---");  
+  InitialisationGSM(serialSIM800L,"0000");
   
   //envoi de sms de test
-  sms = false;
+  smsTest = false;
+  smsReception = false;
 }
 //-------------------------------------------------------------------------------- 
 void loop() {
-  //Read SIM800 output (if available) and print it in Arduino IDE Serial Monitor
-  if(serialSIM800.available()){
-    Serial.write(serialSIM800.read());
+  //Read SIM800L output (if available) and print it in Arduino IDE Serial Monitor
+  if(serialSIM800L.available()>0){
+    Serial.write(serialSIM800L.read());
   }
-  //Read Arduino IDE Serial Monitor inputs (if available) and send them to SIM800
+  
+  //Read Arduino IDE Serial Monitor inputs (if available) and send them to SIM800L
   if(Serial.available()){    
-    serialSIM800.write(Serial.read());
-    serialSIM800.println();
+    serialSIM800L.write(Serial.read());
   }
 
-  if(sms==true){
-    sendSms(serialSIM800,"Msg de test !!","33600000000");        
-    sms = false;
+  if(smsTest==true){
+    Serial.println("---## Send TEST SMS ##---");
+    sendSms(serialSIM800L,"Msg de test !!","33600000000");        
+    smsTest = false;
   }
+
+  if(smsReception==true){
+    Serial.println("---## Reception SMS ##---");
+    receptionSms(serialSIM800L);        
+    smsReception = false;
+  }  
 }
 //--------------------------------------------------------------------------------
 void InitialisationGSM(SoftwareSerial serialGSM, String pinGSM) {
-  Serial.println("---## Initialisation ##---");
   Serial.println("----- Code PIN -----");
   serialGSM.print("AT+CPIN=");
-  serialGSM.println(pinGSM);
+  serialGSM.print(pinGSM);
+  serialGSM.println("\r");
   delay(5000);
   Serial.println("----- Statut -----");
-  serialGSM.println("ATI"); 
-  delay(4000);
+  serialGSM.println("ATI\r"); 
+  delay(1000);
   Serial.println("----- Etat du Reseau -----");
-  serialGSM.println("AT+CSQ"); 
-  delay(4000);
+  serialGSM.println("AT+CSQ\r"); 
+  delay(1000);
   Serial.println("----- Operateur -----");
-  serialGSM.println("AT+COPS ?"); 
-  delay(4000);   
+  serialGSM.println("AT+COPS ?\r"); 
+  delay(1000);   
 }
 //--------------------------------------------------------------------------------    
 void sendSms(SoftwareSerial serialGSM, String messageEnvoi, String numeroTel) {
   Serial.println("Début d'envoi de message");
-    serialGSM.print("AT+CMGF=1\r");  // Lance le mode SMS
+    // Lance le mode SMS
+    serialGSM.print("AT+CMGF=1\r");  
     delay(1000);
-    // Entrez votre numéro de téléphone    
+    //numéro de téléphone    
     serialGSM.print("AT+CMGS=\"+");
     serialGSM.print(numeroTel);
     serialGSM.print("\"\r");  
     delay(1000);
-    // Entrez votre message ici    
+    //message    
     serialGSM.print(messageEnvoi);
     serialGSM.print(" \r");  
     // CTR+Z en langage ASCII, indique la fin du message
@@ -84,5 +93,17 @@ void sendSms(SoftwareSerial serialGSM, String messageEnvoi, String numeroTel) {
     Serial.print(" Pour :");
     Serial.print(numeroTel);
     Serial.println(" Envoyé");
+}
+//--------------------------------------------------------------------------------
+void receptionSms(SoftwareSerial serialGSM) {
+  Serial.println("Receiving text message...");
+  // Configure le mode SMS
+  serialGSM.print("AT+CMGF=1\r");   
+  // Affiche tous les messages
+  serialGSM.print("AT+CMGL=\"ALL\"\r");
+  //AT+CMGL= "REC READ" : Affiche tous les messages lus
+  //AT+CMGL= "REC UNREAD" : Affiche tous les messages non lus.
+  delay(1000);
+  serialGSM.println();
 }
 //--------------------------------------------------------------------------------
