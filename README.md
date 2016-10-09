@@ -11,12 +11,12 @@ Le sms est bien envoyé, mais j'ai pas de retour des commande AT dans la console
 
 1. 1 x Alim externe(calibré sur 5v / 2A)
 2. 1 x Arduino Nano
-3. 1 x SIM800L EVB de RoHS
+3. 1 x SIM800L de SIMCOM
 4. 1 x Diode 1N4007
 
 ###PIN
 
-Il y a 7 PIN :
+Il y a 5 PIN :
 * 5v
 * GND
 * VDD
