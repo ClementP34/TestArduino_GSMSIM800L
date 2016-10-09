@@ -39,7 +39,7 @@ void loop() {
 
   if(smsTest==true){
     Serial.println("---## Send TEST SMS ##---");
-    sendSms(serialSIM800L,"Msg de test !!","33682553782");        
+    sendSms(serialSIM800L,"Msg de test !!","330606060606");        
     smsTest = false;
   }
 
