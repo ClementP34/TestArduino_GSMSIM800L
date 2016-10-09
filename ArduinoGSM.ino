@@ -1,14 +1,11 @@
 #include <SoftwareSerial.h>
 
 //Connexion des broches  
-//SIM800 TX is connected to Arduino D8
-#define SIM800L_TX_PIN 8
- 
-//SIM800 RX is connected to Arduino D7
-#define SIM800L_RX_PIN 7
+int sim800lTx=8; //SIM_TXD sur Arduino D8
+int sim800lRx=7; //SIM_RXD sur Arduino D7
  
 //Create software serial object to communicate with SIM800
-SoftwareSerial serialSIM800L(SIM800L_TX_PIN,SIM800L_RX_PIN);
+SoftwareSerial serialSIM800L(sim800lTx,sim800lRx);
 
 //conditionnel d'envoi de sms
 boolean smsTest;
@@ -19,10 +16,9 @@ boolean smsReception;
   Serial.begin(9600);
      
   //Initialisation de la connexion Serie avec l'Arduino et le module SIM800L
-  serialSIM800L.begin(19200);
+  serialSIM800L.begin(9600);
   
   delay(1000);
-  Serial.println("---## Initialisation ##---");  
   InitialisationGSM(serialSIM800L,"0000");
   
   //envoi de sms de test
@@ -43,62 +39,62 @@ void loop() {
 
   if(smsTest==true){
     Serial.println("---## Send TEST SMS ##---");
-    sendSms(serialSIM800L,"Msg de test !!","33600000000");        
+    sendSms(serialSIM800L,"Msg de test !!","33682553782");        
     smsTest = false;
   }
 
   if(smsReception==true){
-    Serial.println("---## Reception SMS ##---");
     receptionSms(serialSIM800L);        
     smsReception = false;
   }  
 }
 //--------------------------------------------------------------------------------
 void InitialisationGSM(SoftwareSerial serialGSM, String pinGSM) {
-  Serial.println("----- Code PIN -----");
+  Serial.println("---## Initialisation ##---");  
+  Serial.println("-------- Code PIN --------");
   serialGSM.print("AT+CPIN=");
   serialGSM.print(pinGSM);
   serialGSM.println("\r");
-  delay(5000);
-  Serial.println("----- Statut -----");
-  serialGSM.println("ATI\r"); 
   delay(1000);
+  Serial.println("--------- Statut ---------");
+  serialGSM.println("ATI\r"); 
+  delay(1000); 
   Serial.println("----- Etat du Reseau -----");
   serialGSM.println("AT+CSQ\r"); 
   delay(1000);
-  Serial.println("----- Operateur -----");
+  Serial.println("------- Operateurs -------");
   serialGSM.println("AT+COPS ?\r"); 
-  delay(1000);   
+  delay(1000);
+  Serial.println("---## -------------- ##---");   
 }
 //--------------------------------------------------------------------------------    
 void sendSms(SoftwareSerial serialGSM, String messageEnvoi, String numeroTel) {
-  Serial.println("Début d'envoi de message");
-    // Lance le mode SMS
-    serialGSM.print("AT+CMGF=1\r");  
-    delay(1000);
-    //numéro de téléphone    
-    serialGSM.print("AT+CMGS=\"+");
-    serialGSM.print(numeroTel);
-    serialGSM.print("\"\r");  
-    delay(1000);
-    //message    
-    serialGSM.print(messageEnvoi);
-    serialGSM.print(" \r");  
-    // CTR+Z en langage ASCII, indique la fin du message
-    serialGSM.print(char(26));        
-    delay(1000);
-    serialGSM.println();
-    Serial.print("SMS : ");
-    Serial.print(messageEnvoi);
-    Serial.print(" Pour :");
-    Serial.print(numeroTel);
-    Serial.println(" Envoyé");
+  Serial.println("---##    Send SMS    ##---");
+  serialGSM.print("AT+CMGF=1\r");  // Lance le mode SMS
+  delay(1000);
+  //numéro de téléphone    
+  serialGSM.print("AT+CMGS=\"+");
+  serialGSM.print(numeroTel);
+  serialGSM.print("\"\r");  
+  delay(1000);
+  //message    
+  serialGSM.print(messageEnvoi);
+  serialGSM.print(" \r");  
+  // CTR+Z en langage ASCII, indique la fin du message
+  serialGSM.print(char(26));        
+  delay(1000);
+  serialGSM.println();
+  Serial.print("SMS : ");
+  Serial.print(messageEnvoi);
+  Serial.print(" Pour :");
+  Serial.print(numeroTel);
+  Serial.println(" Envoyé");
+  Serial.println("---## -------------- ##---");     
 }
 //--------------------------------------------------------------------------------
 void receptionSms(SoftwareSerial serialGSM) {
-  Serial.println("Receiving text message...");
-  // Configure le mode SMS
-  serialGSM.print("AT+CMGF=1\r");   
+  Serial.println("---## ReceveivingSMS ##---");
+  serialGSM.print("AT+CMGF=1\r");   // Configure le mode SMS
   // Affiche tous les messages
   serialGSM.print("AT+CMGL=\"ALL\"\r");
   //AT+CMGL= "REC READ" : Affiche tous les messages lus
