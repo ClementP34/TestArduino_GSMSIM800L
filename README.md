@@ -7,14 +7,14 @@ C'est de la repompe de tuto, je suis un débutant et j'arrive pas à bien le bra
 
 Le sms est bien envoyé, mais j'ai pas de retour des commande AT dans la console... Au moins ça avance !
 
-###Materiel
+### Materiel
 
 1. 1 x Alim externe(calibré sur 5v / 2A)
 2. 1 x Arduino Nano
 3. 1 x SIM800L de SIMCOM
 4. 1 x Diode 1N4007
 
-###PIN
+### PIN
 
 Il y a 5 PIN :
 * 5v
@@ -25,7 +25,7 @@ Il y a 5 PIN :
 * GND
 * RST
  
-###Branchement...
+### Branchement...
 
 * 5v du module vers 5v de l'Alim externe
 * GND du module vers GND de l'Alim externe
@@ -35,5 +35,5 @@ Il y a 5 PIN :
 * GND du module vers GND de l'Alim externe
 * RST du module vers RST de l'Arduino
 
-##Resultat
+## Resultat
 Le SMS est envoyé, mais je n'ai pas les retours des commandes AT dans la console...
